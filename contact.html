@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ | 体育会キャリア</title>
+  <meta name="description" content="体育会キャリアへのお問い合わせページ。掲載内容の誤り・ご意見・ご要望などはこちらからご連絡ください。">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .contact-form { max-width: 640px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+    .form-group label .required { color: var(--accent); font-size: 0.78rem; margin-left: 6px; font-weight: 400; }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 10px 12px; font-size: 0.9rem;
+      border: 1px solid var(--border); border-radius: 6px;
+      font-family: inherit; color: var(--text-main);
+      background: #fff;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(27,58,107,0.1); }
+    .form-group textarea { height: 160px; resize: vertical; }
+    .form-note { font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
+    .btn-submit {
+      background: var(--primary); color: #fff; border: none;
+      padding: 12px 36px; border-radius: 6px; font-size: 1rem;
+      font-weight: 700; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-submit:hover { background: #152e57; }
+    .contact-note { background: var(--bg); border-radius: 8px; padding: 20px 24px; margin-bottom: 28px; font-size: 0.875rem; line-height: 1.7; }
+    .contact-note ul { padding-left: 1.4em; margin-top: 8px; }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">体育会<span>キャリア</span></a>
+      <nav class="site-nav" id="siteNav">
+        <a href="index.html">ランキング</a><a href="hikaku.html">比較表</a><a href="column/tenshoku-nayami.html">コラム</a><a href="contact.html" class="active nav-cta">お問い合わせ</a>
+      </nav>
+      <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">ホーム</a><span class="breadcrumb-sep">›</span><span>お問い合わせ</span></nav>
+    <h1 style="margin:10px 0 0; font-size:1.6rem;">お問い合わせ</h1>
+  </div>
+</div>
+
+<main>
+  <div class="container section">
+    <div class="contact-note">
+      <strong>お問い合わせ前にご確認ください</strong>
+      <ul>
+        <li>掲載情報の訂正依頼・転職エージェントへの直接のお問い合わせ・転職相談は、各エージェントの公式サイトへご連絡ください。</li>
+        <li>内容によってはご回答が遅れる場合や、回答できない場合があります。あらかじめご了承ください。</li>
+        <li>ご入力いただいた個人情報は、<a href="privacy-policy.html">プライバシーポリシー</a>に基づき適切に管理します。</li>
+      </ul>
+    </div>
+
+    <!-- Google Forms や Netlify Forms 等に差し替え可能なフォーム -->
+    <!-- 現在はHTMLフォームのみ。実際の送信機能はフォームサービスと連携して実装してください -->
+    <!-- 例: Google Forms のURLをformのactionに設定する、またはFormspreeなどのサービスを利用する -->
+    <form class="contact-form" action="#" method="post">
+      <div class="form-group">
+        <label for="name">お名前<span class="required">必須</span></label>
+        <input type="text" id="name" name="name" placeholder="例：山田 太郎" required>
+      </div>
+      <div class="form-group">
+        <label for="email">メールアドレス<span class="required">必須</span></label>
+        <input type="email" id="email" name="email" placeholder="例：example@email.com" required>
+        <p class="form-note">返信用メールアドレスをご入力ください。</p>
+      </div>
+      <div class="form-group">
+        <label for="category">お問い合わせ種別<span class="required">必須</span></label>
+        <select id="category" name="category" required>
+          <option value="">選択してください</option>
+          <option value="content">掲載内容の誤りについて</option>
+          <option value="ad">広告・掲載依頼</option>
+          <option value="press">取材・メディア掲載</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="message">お問い合わせ内容<span class="required">必須</span></label>
+        <textarea id="message" name="message" placeholder="お問い合わせ内容をご入力ください。" required></textarea>
+      </div>
+      <button type="submit" class="btn-submit">送信する</button>
+    </form>
+
+    <!-- フォームサービス未設定の注記 -->
+    <div class="box box-info" style="max-width:640px; margin-top:24px;">
+      <strong>フォームの設定について（サイト管理者向け）</strong><br>
+      このフォームは現在サーバー送信機能未設定です。Google FormsのURLをformの<code>action</code>属性に設定するか、<a href="https://formspree.io/" target="_blank" rel="noopener noreferrer">Formspree</a>などの静的サイト向けフォームサービスを利用して送信機能を追加してください。
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-logo">体育会<span>キャリア</span></div><p class="footer-desc">体育会出身・アスリート経験者の第二新卒転職を支援するエージェント比較メディア。</p></div>
+      <div class="footer-col"><h4>エージェント</h4><ul class="footer-links"><li><a href="agent/maenomery.html">マエノメリ</a></li><li><a href="agent/archual-design.html">アーシャルデザイン</a></li><li><a href="agent/doda.html">doda</a></li><li><a href="agent/recruit-agent.html">リクルートエージェント</a></li></ul></div>
+      <div class="footer-col"><h4>サイト情報</h4><ul class="footer-links"><li><a href="index.html">ランキング</a></li><li><a href="hikaku.html">比較表</a></li><li><a href="privacy-policy.html">プライバシーポリシー</a></li><li><a href="disclaimer.html">免責事項</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 体育会キャリア</span><span>本サイトはアフィリエイト広告（PR）を利用しています</span></div>
+  </div>
+</footer>
+<script>function toggleNav(){document.getElementById('siteNav').classList.toggle('open');}</script>
+</body>
+</html>

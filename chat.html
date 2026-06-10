@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>転職タイプ診断 | 体育会出身者専門サポート 一職入魂</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:       #1B3A6B;
+      --primary-mid:   #2952A3;
+      --accent:        #E8510E;
+      --yellow:        #F8C94E;
+      --chat-bg:       #E8EEF8;
+      --bot-bubble:    #FFFFFF;
+      --user-bubble:   #1B3A6B;
+      --choice-border: #C5D4E8;
+      --font: 'Noto Sans JP', -apple-system, 'Hiragino Kaku Gothic ProN', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font);
+      background: var(--primary);
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 58px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    .header-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .header-text-wrap { display: flex; flex-direction: column; }
+    .header-name {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+    .header-name span { color: var(--yellow); }
+    .header-sub {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 1px;
+    }
+    .header-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.15);
+      z-index: 99;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--yellow);
+      transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+      width: 0%;
+    }
+
+    /* ── Chat area ── */
+    .chat-area {
+      position: fixed;
+      top: 61px; bottom: 0; left: 0; right: 0;
+      background: var(--chat-bg);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 18px 14px 32px;
+    }
+
+    /* ── Date chip ── */
+    .date-chip {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .date-chip span {
+      background: rgba(0,0,0,0.12);
+      color: #555;
+      font-size: 0.68rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── Message rows ── */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+      margin-bottom: 10px;
+      animation: fadeUp 0.3s ease both;
+    }
+    .msg-row.user { flex-direction: row-reverse; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(27,58,107,0.35);
+    }
+
+    .bubble {
+      max-width: 76%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      word-break: break-word;
+    }
+    .bot .bubble {
+      background: var(--bot-bubble);
+      color: #1a1a2e;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.09);
+    }
+    .user .bubble {
+      background: var(--user-bubble);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    /* ── Typing indicator ── */
+    .typing-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+    .typing-bubble {
+      background: #fff;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: 13px 16px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.09);
+    }
+    .typing-dot {
+      width: 6px; height: 6px;
+      background: #bbb;
+      border-radius: 50%;
+      animation: bounce 1.15s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes bounce {
+      0%, 55%, 100% { transform: translateY(0);   opacity: 0.4; }
+      28%           { transform: translateY(-5px); opacity: 1;   }
+    }
+
+    /* ── Choices ── */
+    .choices-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      animation: fadeUp 0.3s ease both;
+      padding-bottom: 8px;
+    }
+    .choices-wrap.grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .choice-btn {
+      background: #fff;
+      border: 1.5px solid var(--choice-border);
+      border-radius: 12px;
+      padding: 13px 17px;
+      font-size: 0.875rem;
+      font-family: var(--font);
+      font-weight: 500;
+      color: var(--primary);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s, transform 0.1s;
+      width: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .choices-wrap.grid .choice-btn {
+      padding: 12px 10px;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .choice-btn:hover  { background: #EEF2FF; border-color: var(--primary); }
+    .choice-btn:active { background: var(--primary); color: #fff; transform: scale(0.98); }
+
+    /* ── Gift box ── */
+    .gift-box {
+      background: #FFFBEA;
+      border: 1.5px solid #F8C94E;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .gift-box-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #7A5400;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .gift-box-body {
+      font-size: 0.82rem;
+      color: #5A3E00;
+      line-height: 1.7;
+    }
+    .gift-box-body strong { color: #1B3A6B; }
+
+    /* ── Result card ── */
+    .result-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px 20px;
+      margin-top: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.11);
+      animation: fadeUp 0.45s ease both;
+    }
+    .result-icon { font-size: 42px; text-align: center; margin-bottom: 10px; }
+    .result-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .result-summary {
+      font-size: 0.82rem;
+      color: #555;
+      line-height: 1.85;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+    .result-highlight {
+      background: #EEF3FF;
+      border-left: 3px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 500;
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+
+    /* ── LINE button ── */
+    .line-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #06C755;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font);
+      padding: 16px 20px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(6,199,85,0.42);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .line-btn:hover  { background: #05b349; transform: translateY(-2px); box-shadow: 0 6px 22px rgba(6,199,85,0.5); }
+    .line-btn:active { transform: scale(0.97); }
+    .line-btn svg   { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+    .line-btn-inner { display: flex; flex-direction: column; align-items: flex-start; }
+    .line-btn-main  { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
+    .line-btn-sub   { font-size: 0.68rem; font-weight: 400; opacity: 0.88; margin-top: 2px; }
+
+    .privacy-note {
+      font-size: 0.68rem;
+      color: #aaa;
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.7;
+    }
+
+    /* ── Step indicator ── */
+    .step-label {
+      text-align: right;
+      font-size: 0.68rem;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    /* bottom padding so choices don't hide behind system bars */
+    .chat-pad { height: 100px; }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="header">
+  <div class="header-icon">🏆</div>
+  <div class="header-text-wrap">
+    <div class="header-name">一職入魂 <span>キャリア</span></div>
+    <div class="header-sub">体育会出身者専門 転職サポート</div>
+  </div>
+  <div class="header-badge">無料相談受付中</div>
+</header>
+
+<!-- プログレスバー -->
+<div class="progress-wrap">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<!-- チャットエリア -->
+<div class="chat-area" id="chatArea">
+  <div class="date-chip"><span>転職タイプ診断（全5問）</span></div>
+  <div class="chat-pad"></div>
+</div>
+
+<script>
+/* ───────────── UTM / 流入パラメータ取得 ───────────── */
+const _p = new URLSearchParams(location.search);
+const inflowSource   = _p.get('utm_source')   || _p.get('inflow_source') || _p.get('media') || 'sns';
+const inflowCampaign = _p.get('inflow_campaign_name') || _p.get('utm_campaign') || '';
+
+/* ───────────── 質問データ ───────────── */
+const QUESTIONS = [
+  {
+    text: 'まず、現在のお仕事の<strong>職種</strong>を教えてください👇',
+    choices: ['営業', 'コンサル', '販売・接客', '事務', '人事・広報', 'マーケティング', 'ITエンジニア', '施工管理・現場系', '製造', '介護'],
+    grid: true
+  },
+  {
+    text: 'ありがとうございます！\n次に<strong>年齢</strong>を教えてください。',
+    choices: ['22〜24歳', '25〜27歳', '28〜30歳', '31〜35歳', '36歳以上']
+  },
+  {
+    text: '今のお仕事で\n<strong>一番困っていること</strong>は何ですか？',
+    choices: [
+      '💰 給与・待遇が上がらない',
+      '😔 仕事内容が合わない・つまらない',
+      '😤 職場の人間関係・環境が辛い',
+      '🌀 将来のキャリアが不安・見えない'
+    ]
+  },
+  {
+    text: '転職で<strong>一番重視していること</strong>を\n教えてください！',
+    choices: [
+      '📈 年収アップ',
+      '🔥 やりがい・成長できる環境',
+      '🕐 働き方（残業少・リモート等）',
+      '🏢 会社の安定性・福利厚生'
+    ]
+  },
+  {
+    text: '最後に！\n転職の<strong>ご希望時期</strong>はいつ頃ですか？',
+    choices: [
+      '⚡ できるだけ早く（〜2ヶ月）',
+      '📅 3〜6ヶ月以内',
+      '🗓 半年〜1年以内',
+      '🔍 まずは情報収集したい'
+    ]
+  }
+];
+
+const TOTAL = QUESTIONS.length;
+const answers = [];
+let currentQ = 0;
+
+/* ───────────── ユーティリティ ───────────── */
+const area   = () => document.getElementById('chatArea');
+const pad    = () => area().querySelector('.chat-pad');
+const scroll = () => setTimeout(() => { const a = area(); a.scrollTop = a.scrollHeight; }, 60);
+
+function insertBefore(el) {
+  area().insertBefore(el, pad());
+}
+
+function updateProgress() {
+  document.getElementById('progressFill').style.width =
+    (currentQ / TOTAL * 100) + '%';
+}
+
+/* ───────────── メッセージ追加 ───────────── */
+function addBotMessage(html, delayMs = 0) {
+  return new Promise(resolve => {
+    const typingRow = document.createElement('div');
+    typingRow.className = 'typing-row';
+    typingRow.innerHTML =
+      '<div class="avatar">🏆</div>' +
+      '<div class="typing-bubble">' +
+        '<div class="typing-dot"></div>' +
+        '<div class="typing-dot"></div>' +
+        '<div class="typing-dot"></div>' +
+      '</div>';
+    insertBefore(typingRow);
+    scroll();
+
+    setTimeout(() => {
+      typingRow.remove();
+      const row = document.createElement('div');
+      row.className = 'msg-row bot';
+      const text = html.replace(/\n/g, '<br>');
+      row.innerHTML =
+        '<div class="avatar">🏆</div>' +
+        '<div class="bubble">' + text + '</div>';
+      insertBefore(row);
+      scroll();
+      resolve();
+    }, delayMs + 650);
+  });
+}
+
+function addUserMessage(text) {
+  const row = document.createElement('div');
+  row.className = 'msg-row user';
+  row.innerHTML = '<div class="bubble">' + escHtml(text) + '</div>';
+  insertBefore(row);
+  scroll();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ───────────── 選択肢表示 ───────────── */
+function showChoices(qIndex, onSelect) {
+  const q = QUESTIONS[qIndex];
+
+  // ステップ表示
+  const step = document.createElement('div');
+  step.className = 'step-label';
+  step.textContent = (qIndex + 1) + ' / ' + TOTAL;
+  insertBefore(step);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'choices-wrap' + (q.grid ? ' grid' : '');
+  wrap.id = 'choices-' + qIndex;
+
+  q.choices.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = escHtml(choice);
+    btn.addEventListener('click', () => {
+      // 選択肢を全部無効化してから消去
+      wrap.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+      step.remove();
+      wrap.remove();
+      onSelect(choice);
+    });
+    wrap.appendChild(btn);
+  });
+
+  insertBefore(wrap);
+  scroll();
+}
+
+/* ───────────── 質問フロー ───────────── */
+async function nextQuestion() {
+  if (currentQ >= TOTAL) {
+    await showResult();
+    return;
+  }
+
+  updateProgress();
+  const q = QUESTIONS[currentQ];
+  const delay = currentQ === 0 ? 400 : 0;
+  await addBotMessage(q.text, delay);
+
+  showChoices(currentQ, async selected => {
+    answers.push(selected);
+    addUserMessage(selected);
+    currentQ++;
+    await wait(320);
+    nextQuestion();
+  });
+}
+
+/* ───────────── 結果・LINE誘導 ───────────── */
+async function showResult() {
+  document.getElementById('progressFill').style.width = '100%';
+
+  // 回答に基づくパーソナライズ
+  const priority = answers[3] || '';
+  let personalMsg = '';
+  if      (priority.includes('年収'))  personalMsg = '体育会出身で年収100万円以上アップした事例が多数あります。あなたの実績を正当に評価する企業をご紹介します。';
+  else if (priority.includes('やりがい')) personalMsg = '「本気でやれる環境」を求める体育会出身者が多数活躍している成長企業をご紹介できます。';
+  else if (priority.includes('働き方')) personalMsg = '体育会経験者を積極採用しながら、働き方改革が進んでいる優良企業を厳選してご紹介します。';
+  else                                   personalMsg = '体育会の強みを活かせる安定企業の非公開求人を多数保有しています。';
+
+  // 完了メッセージ
+  await addBotMessage('回答ありがとうございます！\n\n以下より公式LINEへ登録して、\n無料で<strong>「体育会出身者のための自己分析シート」</strong>を受け取ってください！', 200);
+  await wait(600);
+
+  // LINEメッセージ構築
+  const lineMsg = [
+    'こんにちは！転職診断から来ました。',
+    '職種：'     + stripEmoji(answers[0]),
+    '年齢：'     + answers[1],
+    'お悩み：'   + stripEmoji(answers[2]),
+    '重視：'     + stripEmoji(answers[3]),
+    '希望時期：' + stripEmoji(answers[4])
+  ].join('\n');
+
+  // ▼▼▼ ここにLINE公式アカウントのIDを入れてください ▼▼▼
+  const LINE_ACCOUNT_ID = '@509dlmul';
+  // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+  // GAS経由でchat_lp流入を記録してからLINEへリダイレクト
+  const lineAddUrl = 'https://script.google.com/macros/s/AKfycbyx8SEEbu4W_NpdKcKq7V_O13qdk6I6ktTaQPbtYB9k4msTVeEMIi_T4ZqOHgE9ngFX/exec?source=chat_lp';
+
+  // 結果カード
+  const card = document.createElement('div');
+  card.className = 'result-card';
+  card.innerHTML =
+    '<div class="gift-box">' +
+      '<div class="gift-box-title">🎁 LINE友達追加 限定プレゼント</div>' +
+      '<div class="gift-box-body">' +
+        '<strong>「"体育会出身者"の本当の強みがわかる<br>自己分析シート」</strong>を無料プレゼント！<br>' +
+        '追加後すぐに自動でお届けします。' +
+      '</div>' +
+    '</div>' +
+    '<a href="' + lineAddUrl + '" class="line-btn" target="_blank" rel="noopener">' +
+      '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.064-.022.134-.031.2-.031.211 0 .391.09.51.252l2.443 3.316V8.108c0-.345.282-.63.63-.63.346 0 .627.285.627.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>' +
+      '</svg>' +
+      'LINEを友達追加してシートをもらう' +
+    '</a>' +
+    '<p class="privacy-note">※ 完全無料・強引な営業は一切ありません<br>個人情報は厳重に管理されます</p>';
+
+  insertBefore(card);
+  scroll();
+}
+
+/* ───────────── ヘルパー ───────────── */
+function wait(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+// 絵文字プレフィックスを除去（例：「💰 給与…」→「給与…」）
+function stripEmoji(str) {
+  return str.replace(/^[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\s]+/u, '').trim();
+}
+
+/* ───────────── 開始 ───────────── */
+async function start() {
+  await wait(300);
+  await addBotMessage(
+    'こんにちは！🏆<br>' +
+    '体育会出身者専門の転職サポート<br><strong>「一職入魂」</strong>です！<br><br>' +
+    '✅ 同じような仕事をしているのに同級生と年収が100万円以上違う<br>' +
+    '✅ 勢いで選んだ不動産営業職だけど自分の強みを活かせていない<br>' +
+    '✅ 本当に自分に合った仕事を見つけたい', 300);
+
+  await addBotMessage(
+    'このような悩みを抱えている方は、<br><strong>「自分の本当の強み」×「伸びる業界」</strong>を知るだけで、<br>1年後の姿を大きく変えられます。', 500);
+
+  await addBotMessage(
+    'そこでまず「自分の本当の強み」が見つかる、<br>✨無料✨の<strong>「体育会出身者のための自己分析シート」</strong>を受け取っていただきたいです！', 500);
+
+  await addBotMessage(
+    '現在、一職入魂では「キャリア」に関する市場調査をしています。<br>' +
+    '今回のシートを受け取る条件として、1分で終わる5つの質問への回答のご協力をお願いいたします！<br><br>' +
+    '<span style="font-size:0.75em; color:#aaa;">※ 回答した内容は、外部には一切漏れません。</span>', 500);
+
+  await wait(350);
+  nextQuestion();
+}
+
+start();
+</script>
+</body>
+</html>
