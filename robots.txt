@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /contact.html
 
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://sportscareer.owencorporation.co.jp/sitemap.xml
