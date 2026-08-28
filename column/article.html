@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コラム | 体育会キャリア</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-thumb {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 28px;
+      display: block;
+    }
+    .article-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .article-meta-row {
+      display: flex;
+      gap: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--text);
+    }
+    .article-body h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin: 40px 0 16px;
+      padding-left: 14px;
+      border-left: 4px solid var(--accent);
+    }
+    .article-body h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 28px 0 12px;
+    }
+    .article-body p { margin-bottom: 18px; }
+    .article-body ul, .article-body ol {
+      padding-left: 24px;
+      margin-bottom: 18px;
+    }
+    .article-body li { margin-bottom: 6px; line-height: 1.75; }
+    .article-body a { color: var(--accent); }
+    .article-body img { max-width: 100%; border-radius: 8px; margin: 16px 0; }
+    .article-body strong { font-weight: 700; }
+    .loading {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--text-muted);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      text-decoration: none;
+      margin-bottom: 24px;
+    }
+    .back-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="../index.html" class="site-logo">体育会<span>キャリア</span></a>
+      <nav class="site-nav" id="siteNav">
+        <a href="../index.html">ランキング</a>
+        <a href="../hikaku.html">比較表</a>
+        <a href="index.html" style="color:var(--accent);">コラム</a>
+        <a href="../contact.html" class="nav-cta">お問い合わせ</a>
+      </nav>
+      <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container section">
+    <div class="layout-2col">
+      <div id="article-content">
+        <div class="loading">読み込み中...</div>
+      </div>
+      <aside>
+        <div class="sidebar-widget">
+          <h3>おすすめエージェント</h3>
+          <ul class="sidebar-list">
+            <li><span class="s-num">1</span><a href="../agent/maenomery.html">マエノメリ</a></li>
+            <li><span class="s-num">2</span><a href="../agent/archual-design.html">アーシャルデザイン</a></li>
+            <li><span class="s-num">3</span><a href="../agent/spochare.html">スポチャレ転職</a></li>
+            <li><span class="s-num">4</span><a href="../agent/plm-career.html">PLMキャリア</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-widget">
+          <h3>コラム一覧</h3>
+          <a href="index.html" class="btn-register" style="display:block;text-align:center;font-size:0.88rem;">すべてのコラムを見る</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">体育会<span>キャリア</span></div>
+        <p class="footer-desc">体育会出身・アスリート経験者の第二新卒転職を支援するエージェント比較メディア。</p>
+      </div>
+      <div class="footer-col">
+        <h4>エージェント</h4>
+        <ul class="footer-links">
+          <li><a href="../agent/maenomery.html">マエノメリ</a></li>
+          <li><a href="../agent/archual-design.html">アーシャルデザイン</a></li>
+          <li><a href="../agent/spochare.html">スポチャレ転職</a></li>
+          <li><a href="../agent/plm-career.html">PLMキャリア</a></li>
+          <li><a href="../agent/doda.html">doda</a></li>
+          <li><a href="../agent/recruit-agent.html">リクルートエージェント</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>サイト情報</h4>
+        <ul class="footer-links">
+          <li><a href="../hikaku.html">比較表</a></li>
+          <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="../disclaimer.html">免責事項</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 体育会キャリア</span>
+      <span>本サイトはアフィリエイト広告（PR）を利用しています</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API_KEY = '6GZBE5ZsWT6mxUD1DdwoVCGEP1m0lwBfyplg';
+  const SERVICE_DOMAIN = 'athletecareer';
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  }
+
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+
+  if (!id) {
+    window.location.href = 'index.html';
+  } else {
+    fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/columns/${id}`, {
+      headers: { 'X-MICROCMS-API-KEY': API_KEY }
+    })
+    .then(res => {
+      if (!res.ok) throw new Error();
+      return res.json();
+    })
+    .then(article => {
+      document.title = `${article.title} | 体育会キャリア`;
+
+      const thumb = article.thumbnail
+        ? `<img class="article-thumb" src="${article.thumbnail.url}" alt="${article.title}">`
+        : '';
+
+      document.getElementById('article-content').innerHTML = `
+        <a href="index.html" class="back-link">← コラム一覧に戻る</a>
+        <nav class="breadcrumb" style="margin-bottom:16px;">
+          <a href="../index.html">ホーム</a>
+          <span class="breadcrumb-sep">›</span>
+          <a href="index.html">コラム</a>
+          <span class="breadcrumb-sep">›</span>
+          <span>${article.title}</span>
+        </nav>
+        ${thumb}
+        <h1 class="article-title">${article.title}</h1>
+        <div class="article-meta-row">
+          <span>📅 ${formatDate(article.publishedAt || article.createdAt)}</span>
+          <span>👤 体育会キャリア編集部</span>
+        </div>
+        <div class="article-body">${article.body}</div>
+      `;
+    })
+    .catch(() => {
+      document.getElementById('article-content').innerHTML =
+        '<div class="loading">記事が見つかりませんでした。</div>';
+    });
+  }
+
+  function toggleNav() { document.getElementById('siteNav').classList.toggle('open'); }
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>転職コラム一覧 | 体育会キャリア</title>
+  <meta name="description" content="体育会出身者・アスリート経験者の転職に役立つコラムを掲載。転職の悩み・失敗しない選び方など実践的な情報をお届けします。">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .column-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .column-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .column-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .column-card-thumb {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #eef0f5;
+      display: block;
+    }
+    .column-card-thumb-placeholder {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #eef0f5, #dde2ee);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .column-card-body {
+      padding: 18px 20px 20px;
+    }
+    .column-card-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .column-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .column-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .error-msg {
+      text-align: center;
+      padding: 60px 0;
+      color: #dc3545;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="../index.html" class="site-logo">体育会<span>キャリア</span></a>
+      <nav class="site-nav" id="siteNav">
+        <a href="../index.html">ランキング</a>
+        <a href="../hikaku.html">比較表</a>
+        <a href="index.html" style="color:var(--accent);">コラム</a>
+        <a href="../contact.html" class="nav-cta">お問い合わせ</a>
+      </nav>
+      <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="../index.html">ホーム</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>コラム</span>
+    </nav>
+    <h1 style="margin:10px 0 8px;">転職コラム</h1>
+    <p style="color:var(--text-muted);font-size:0.9rem;">体育会出身者・アスリート経験者の転職に役立つ情報をお届けします。</p>
+  </div>
+</div>
+
+<main>
+  <div class="container section">
+    <div id="column-list">
+      <div class="loading">読み込み中...</div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">体育会<span>キャリア</span></div>
+        <p class="footer-desc">体育会出身・アスリート経験者の第二新卒転職を支援するエージェント比較メディア。</p>
+      </div>
+      <div class="footer-col">
+        <h4>エージェント</h4>
+        <ul class="footer-links">
+          <li><a href="../agent/maenomery.html">マエノメリ</a></li>
+          <li><a href="../agent/archual-design.html">アーシャルデザイン</a></li>
+          <li><a href="../agent/spochare.html">スポチャレ転職</a></li>
+          <li><a href="../agent/plm-career.html">PLMキャリア</a></li>
+          <li><a href="../agent/doda.html">doda</a></li>
+          <li><a href="../agent/recruit-agent.html">リクルートエージェント</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>サイト情報</h4>
+        <ul class="footer-links">
+          <li><a href="../hikaku.html">比較表</a></li>
+          <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
+          <li><a href="../disclaimer.html">免責事項</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 体育会キャリア</span>
+      <span>本サイトはアフィリエイト広告（PR）を利用しています</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API_KEY = '6GZBE5ZsWT6mxUD1DdwoVCGEP1m0lwBfyplg';
+  const SERVICE_DOMAIN = 'athletecareer';
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  }
+
+  fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/columns?limit=50`, {
+    headers: { 'X-MICROCMS-API-KEY': API_KEY }
+  })
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById('column-list');
+    if (!data.contents || data.contents.length === 0) {
+      container.innerHTML = '<div class="loading">記事はまだありません。</div>';
+      return;
+    }
+    const grid = document.createElement('div');
+    grid.className = 'column-grid';
+    data.contents.forEach(article => {
+      const card = document.createElement('a');
+      card.className = 'column-card';
+      card.href = `article.html?id=${article.id}`;
+      const thumb = article.thumbnail
+        ? `<img class="column-card-thumb" src="${article.thumbnail.url}" alt="${article.title}" loading="lazy">`
+        : `<div class="column-card-thumb-placeholder">📝</div>`;
+      card.innerHTML = `
+        ${thumb}
+        <div class="column-card-body">
+          <div class="column-card-date">${formatDate(article.publishedAt || article.createdAt)}</div>
+          <div class="column-card-title">${article.title}</div>
+          ${article.description ? `<div class="column-card-desc">${article.description}</div>` : ''}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    container.innerHTML = '';
+    container.appendChild(grid);
+  })
+  .catch(() => {
+    document.getElementById('column-list').innerHTML =
+      '<div class="error-msg">記事の読み込みに失敗しました。</div>';
+  });
+
+  function toggleNav() { document.getElementById('siteNav').classList.toggle('open'); }
+</script>
+</body>
+</html>

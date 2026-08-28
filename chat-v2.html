@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>体育会転職タイプ診断（16タイプ）| 一職入魂</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:       #1B3A6B;
+      --primary-mid:   #2952A3;
+      --accent:        #E8510E;
+      --yellow:        #F8C94E;
+      --chat-bg:       #E8EEF8;
+      --bot-bubble:    #FFFFFF;
+      --user-bubble:   #1B3A6B;
+      --choice-border: #C5D4E8;
+      --font: 'Noto Sans JP', -apple-system, 'Hiragino Kaku Gothic ProN', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font);
+      background: var(--primary);
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 58px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    .header-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .header-text-wrap { display: flex; flex-direction: column; }
+    .header-name {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+    .header-name span { color: var(--yellow); }
+    .header-sub {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 1px;
+    }
+    .header-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.15);
+      z-index: 99;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--yellow);
+      transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+      width: 0%;
+    }
+
+    /* ── Chat area ── */
+    .chat-area {
+      position: fixed;
+      top: 61px; bottom: 0; left: 0; right: 0;
+      background: var(--chat-bg);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 18px 14px 32px;
+    }
+
+    /* ── Date chip ── */
+    .date-chip {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .date-chip span {
+      background: rgba(0,0,0,0.12);
+      color: #555;
+      font-size: 0.68rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── Message rows ── */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+      margin-bottom: 10px;
+      animation: fadeUp 0.3s ease both;
+    }
+    .msg-row.user { flex-direction: row-reverse; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(27,58,107,0.35);
+    }
+
+    .bubble {
+      max-width: 76%;
+      padding: 10px 15px;
+      border-radius: 18px;
+      font-size: 0.875rem;
+      line-height: 1.75;
+      word-break: break-word;
+    }
+    .bot .bubble {
+      background: var(--bot-bubble);
+      color: #1a1a2e;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.09);
+    }
+    .user .bubble {
+      background: var(--user-bubble);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    /* ── Typing indicator ── */
+    .typing-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+    .typing-bubble {
+      background: #fff;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: 13px 16px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.09);
+    }
+    .typing-dot {
+      width: 6px; height: 6px;
+      background: #bbb;
+      border-radius: 50%;
+      animation: bounce 1.15s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+    @keyframes bounce {
+      0%, 55%, 100% { transform: translateY(0);   opacity: 0.4; }
+      28%           { transform: translateY(-5px); opacity: 1;   }
+    }
+
+    /* ── Choices ── */
+    .choices-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      animation: fadeUp 0.3s ease both;
+      padding-bottom: 8px;
+    }
+    .choice-btn {
+      background: #fff;
+      border: 1.5px solid var(--choice-border);
+      border-radius: 12px;
+      padding: 13px 17px;
+      font-size: 0.875rem;
+      font-family: var(--font);
+      font-weight: 500;
+      color: var(--primary);
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s, transform 0.1s;
+      width: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .choice-btn:hover  { background: #EEF2FF; border-color: var(--primary); }
+    .choice-btn:active { background: var(--primary); color: #fff; transform: scale(0.98); }
+
+    /* ── Result card ── */
+    .result-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px 18px;
+      margin-top: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.11);
+      animation: fadeUp 0.45s ease both;
+    }
+    .result-type-badge {
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--primary-mid);
+      background: #EEF3FF;
+      border-radius: 20px;
+      padding: 3px 14px;
+      display: inline-block;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+    .result-type-badge-wrap { text-align: center; }
+    .result-icon { font-size: 46px; text-align: center; margin-bottom: 6px; }
+    .result-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 4px;
+      letter-spacing: 0.02em;
+    }
+    .result-sub {
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .result-desc {
+      font-size: 0.82rem;
+      color: #444;
+      line-height: 1.85;
+      margin-bottom: 16px;
+      padding: 10px 12px;
+      background: #F8F9FC;
+      border-radius: 8px;
+    }
+    .result-section { margin-bottom: 13px; }
+    .result-section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .result-section-title.fit      { background: #E8F5E9; color: #2E7D32; }
+    .result-section-title.avoid    { background: #FFF3E0; color: #BF360C; }
+    .result-section-title.strength { background: #E8EAF6; color: #283593; }
+    .result-item {
+      font-size: 0.8rem;
+      line-height: 1.75;
+      padding: 2px 4px 2px 10px;
+      color: #333;
+      position: relative;
+    }
+    .result-item::before {
+      content: '・';
+      position: absolute;
+      left: 0;
+      color: #999;
+    }
+    .result-divider {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 16px 0;
+    }
+
+    /* ── Gift box ── */
+    .gift-box {
+      background: #FFFBEA;
+      border: 1.5px solid #F8C94E;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .gift-box-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #7A5400;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .gift-box-body {
+      font-size: 0.82rem;
+      color: #5A3E00;
+      line-height: 1.7;
+    }
+    .gift-box-body strong { color: #1B3A6B; }
+
+    /* ── LINE button ── */
+    .line-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #06C755;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font);
+      padding: 16px 20px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(6,199,85,0.42);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .line-btn:hover  { background: #05b349; transform: translateY(-2px); box-shadow: 0 6px 22px rgba(6,199,85,0.5); }
+    .line-btn:active { transform: scale(0.97); }
+    .line-btn svg   { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+    .line-btn-inner { display: flex; flex-direction: column; align-items: flex-start; }
+    .line-btn-main  { font-size: 0.95rem; font-weight: 700; line-height: 1.2; }
+    .line-btn-sub   { font-size: 0.68rem; font-weight: 400; opacity: 0.88; margin-top: 2px; }
+
+    .privacy-note {
+      font-size: 0.68rem;
+      color: #aaa;
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.7;
+    }
+
+    /* ── Step indicator ── */
+    .step-label {
+      text-align: right;
+      font-size: 0.68rem;
+      color: #999;
+      margin-bottom: 4px;
+    }
+
+    /* ── Analyzing animation ── */
+    .analyzing-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px 16px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      animation: fadeUp 0.3s ease both;
+      margin-bottom: 10px;
+    }
+    .analyzing-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .analyzing-dot {
+      width: 8px; height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: bounce 1.15s infinite;
+    }
+    .analyzing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .analyzing-dot:nth-child(3) { animation-delay: 0.36s; }
+    .analyzing-text {
+      font-size: 0.8rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .chat-pad { height: 100px; }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-icon">🏆</div>
+  <div class="header-text-wrap">
+    <div class="header-name">一職入魂 <span>キャリア</span></div>
+    <div class="header-sub">体育会出身者専門 転職サポート</div>
+  </div>
+  <div class="header-badge">診断無料</div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="chat-area" id="chatArea">
+  <div class="date-chip"><span>体育会転職タイプ診断（全5問・約1分）</span></div>
+  <div class="chat-pad"></div>
+</div>
+
+<script>
+/* ───────────── UTM パラメータ取得 ───────────── */
+const _p = new URLSearchParams(location.search);
+const inflowSource = _p.get('utm_source') || _p.get('inflow_source') || _p.get('media') || 'sns';
+
+/* ───────────── 16タイプ定義 ───────────── */
+/*
+  typeIndex = Q1*8 + Q2*4 + Q3*2 + Q4
+  Q1: 0=結果重視, 1=成長重視
+  Q2: 0=チーム型, 1=自律型
+  Q3: 0=安定志向, 1=変化志向
+  Q4: 0=牽引役,   1=実行役
+*/
+const TYPES = [
+  /* 0: 結果×チーム×安定×牽引 */
+  { emoji:'🏆', name:'王道リーダー型', sub:'体育会の強みが最もダイレクトに活きるタイプ',
+    desc:'チームを率いて数字を出すことに喜びを感じるタイプ。安定した組織の中でリーダーシップを発揮するのが得意で、体育会経験がそのままビジネスに直結します。大手・中堅企業の営業リーダー職が最もフィットします。',
+    fits:['大手企業の営業チームリーダー・支店長候補','規模の大きい組織での法人営業','ゼネラリスト型マネジメント職'],
+    avoids:['個人プレー中心のフリーランス・専門職','成果が数字で見えにくい業務職'],
+    strengths:['チームを引っ張る統率力','目標への強い執着心'] },
+
+  /* 1: 結果×チーム×安定×実行 */
+  { emoji:'🛡', name:'堅実チームエース型', sub:'確実に積み上げる力でチームに貢献するタイプ',
+    desc:'チームの一員として確実に数字を積み上げるのが得意なタイプ。目立つより実績で証明する。大手・安定企業で長期的に信頼を積み上げ、着実に出世できるタイプです。',
+    fits:['法人営業担当・ルート営業','カスタマーサクセス・顧客対応','量産型・反復精度が高い営業職'],
+    avoids:['突然の変化が多いベンチャー環境','個人裁量が大きすぎる仕事'],
+    strengths:['コツコツ積み上げる継続力','チームへの強い貢献意識'] },
+
+  /* 2: 結果×チーム×変化×牽引 */
+  { emoji:'🚀', name:'成長牽引型', sub:'変化の中でチームを引っ張りスピード感で結果を出すタイプ',
+    desc:'変化の中でチームを引っ張り、スピード感を持って結果を出すタイプ。スタートアップや成長企業の営業・事業開発職で真価を発揮します。変化をチャンスに変える力があります。',
+    fits:['スタートアップ・成長企業の営業マネージャー','事業開発・アライアンス担当','M&A仲介・金融・投資営業'],
+    avoids:['変化が少ない大企業のルーティン業務','新しい挑戦がほぼない安定志向の職場'],
+    strengths:['逆境でも諦めないメンタル','チームを鼓舞するエネルギー'] },
+
+  /* 3: 結果×チーム×変化×実行 */
+  { emoji:'⚡', name:'突破実行型', sub:'スピードと行動力で変化の中を突き進むタイプ',
+    desc:'変化の多い環境でチームの一員として全力で実行するタイプ。スピードと行動量で結果を出す。ベンチャーや新規開拓営業で圧倒的なパフォーマンスを発揮します。',
+    fits:['ベンチャー企業の新規開拓営業','IT・SaaS・テック系営業','インサイドセールス・SDR'],
+    avoids:['管理職・マネジメント専任のポジション','変化が少なく安定した環境'],
+    strengths:['圧倒的なスピード感','愚直な実行力・行動量'] },
+
+  /* 4: 結果×自律×安定×牽引 */
+  { emoji:'🎯', name:'専門家リーダー型', sub:'専門性を軸に自律的に組織を動かすタイプ',
+    desc:'自分の専門性を磨きながら、自律的にチームや組織を動かすタイプ。戦略的に動いて数字を出す。コンサル・経営系・独立志向の人に向いています。',
+    fits:['経営企画・戦略コンサルタント','独立系FP・資産運用アドバイザー','エリアマネージャー・統括職'],
+    avoids:['大人数のチームを細かく管理する職','専門性を必要としない業務職'],
+    strengths:['目標から逆算して動く力','プレッシャー下での意思決定力'] },
+
+  /* 5: 結果×自律×安定×実行 */
+  { emoji:'🔧', name:'職人追求型', sub:'自分のペースで専門性を高め確実に結果を出すタイプ',
+    desc:'自分のペースで専門性を高め、確実に数字を積み上げるタイプ。資格・専門職や技術系営業で安定的に活躍でき、長期的な専門家キャリアを築けます。',
+    fits:['技術営業・ソリューション営業','専門職（社労士・FP・税理士）','プロジェクトマネージャー'],
+    avoids:['チームマネジメントが中心の職','対人業務・接客が多い職場'],
+    strengths:['目標への強い集中力','コツコツ継続するストイックさ'] },
+
+  /* 6: 結果×自律×変化×牽引 */
+  { emoji:'🌟', name:'起業家型', sub:'変化を楽しみながら自ら道を切り開くタイプ',
+    desc:'変化を楽しみながら自ら道を切り開くタイプ。スタートアップの経営層や独立・事業立上げを目指す仕事に向いています。体育会の精神力が独立後の最大の武器になります。',
+    fits:['起業・独立・フリーランス','スタートアップの事業立上げ・CxO候補','新規事業開発・社内起業家'],
+    avoids:['大企業の中間管理職','ルーティン業務が中心の安定ポジション'],
+    strengths:['諦めない精神力','自分で道を切り開く行動力'] },
+
+  /* 7: 結果×自律×変化×実行 */
+  { emoji:'🗺', name:'フロンティア型', sub:'誰も開拓していない領域を一人で切り開くタイプ',
+    desc:'誰も開拓していない領域を一人で切り開くタイプ。海外・新興市場・フリーランスなど自由度が高い環境で活躍しやすい。制約のない環境で最もパフォーマンスが上がります。',
+    fits:['海外事業・新興国マーケット開拓','フリーランス営業・コンサルタント','スタートアップ初期メンバー'],
+    avoids:['大きな組織での役職・管理職','細かいルールや承認が多い環境'],
+    strengths:['タフなメンタル','未知の状況でも動ける適応力'] },
+
+  /* 8: 成長×チーム×安定×牽引 */
+  { emoji:'🌱', name:'育成リーダー型', sub:'安定した環境でチームの成長を引き出すタイプ',
+    desc:'安定した環境でチームの成長を引き出すのが得意なタイプ。後輩育成・組織づくりで本領を発揮します。体育会での指導経験がそのまま人事・教育職の強みになります。',
+    fits:['人事・採用担当・HRビジネスパートナー','企業内研修講師・コーチング職','チームマネジメント・部門長職'],
+    avoids:['純粋な数字至上主義の環境','個人プレー・専門職中心の業界'],
+    strengths:['後輩指導の実績と育成力','チームのモチベーションを上げる力'] },
+
+  /* 9: 成長×チーム×安定×実行 */
+  { emoji:'💪', name:'縁の下の力持ち型', sub:'チームを陰で支えながら着実に成長するタイプ',
+    desc:'チームを陰で支えながら着実に成長するタイプ。目立たないが組織に欠かせない存在になれます。安定した組織の中で長く信頼を積み上げることができます。',
+    fits:['バックオフィス・総務・管理職','採用担当・人事サポート','チームアシスタント・サポート職'],
+    avoids:['個人成果主義の環境','インセンティブ重視の職場'],
+    strengths:['チームへの献身性','縁の下で支え続ける精神力'] },
+
+  /* 10: 成長×チーム×変化×牽引 */
+  { emoji:'🔥', name:'変革リーダー型', sub:'組織に変化をもたらしながら人を動かすタイプ',
+    desc:'組織に変化をもたらしながらチームを牽引するタイプ。新しい仕組みを作り、人を動かすことが得意。スタートアップや組織改革の現場で真価を発揮します。',
+    fits:['組織・人事コンサルタント','スタートアップの中核ポジション（COO候補）','新規事業・プロジェクトリーダー'],
+    avoids:['変化がない安定大企業','ルーティン業務が中心の職場'],
+    strengths:['組織に変化を起こす突破力','諦めない粘り強さ'] },
+
+  /* 11: 成長×チーム×変化×実行 */
+  { emoji:'📈', name:'成長追求型', sub:'変化の中でチームの一員として学び続けるタイプ',
+    desc:'変化の多い環境でチームの一員として学び続けるタイプ。成長企業の中核メンバーとして活躍しやすい。「成長できる環境」に身を置くことで最大の力を発揮します。',
+    fits:['成長企業のマーケティング・企画職','IT業界・SaaS企業の営業・CS','ベンチャーの総合職・ゼネラリスト'],
+    avoids:['変化の少ない大企業','ルーティン中心の仕事'],
+    strengths:['高い吸収力と学習速度','チームへの貢献意識'] },
+
+  /* 12: 成長×自律×安定×牽引 */
+  { emoji:'🧠', name:'洞察リーダー型', sub:'深く考えて戦略を立て自律的に組織を動かすタイプ',
+    desc:'深く考えて戦略を立て、自律的にチームや組織を動かすタイプ。コンサル・経営系で活躍しやすい。体育会の「目標から逆算する力」がビジネス戦略に直結します。',
+    fits:['経営企画・戦略コンサルタント','プロダクトマネージャー・事業企画','中小企業診断士・ビジネスアナリスト'],
+    avoids:['体育会気質が強い体力勝負の職場','短期成果のみを求める環境'],
+    strengths:['逆算思考で目標を分解して実行する力','プレッシャー下での冷静な判断力'] },
+
+  /* 13: 成長×自律×安定×実行 */
+  { emoji:'📚', name:'コツコツ探究型', sub:'一つのことを深く掘り下げ着実に実力をつけるタイプ',
+    desc:'一つのことを深く掘り下げ、自律的に実力をつけていくタイプ。専門性を武器にキャリアを築けます。体育会のストイックな継続力が、専門職の世界で大きな強みになります。',
+    fits:['専門コンサルタント（法務・労務・財務）','データアナリスト・リサーチャー','士業・専門職への転身'],
+    avoids:['体力勝負・行動量勝負の仕事','体育会文化が強い職場'],
+    strengths:['一つのことを続ける集中力','ストイックに自分を律する力'] },
+
+  /* 14: 成長×自律×変化×牽引 */
+  { emoji:'💡', name:'イノベーター型', sub:'変化を先読みし自ら新しいことを生み出すタイプ',
+    desc:'変化を先読みし、自ら新しいことを生み出すタイプ。スタートアップや新規事業の立上げで真価を発揮します。体育会で養ったゼロからの挑戦力がそのまま武器になります。',
+    fits:['スタートアップの創業・初期メンバー','新規事業開発・社内ベンチャー','プロダクト開発・グロースハック'],
+    avoids:['変化の少ない大企業','細かいルールが多い官公庁・公的機関'],
+    strengths:['諦めない精神力','ゼロから挑戦する行動力'] },
+
+  /* 15: 成長×自律×変化×実行 */
+  { emoji:'🔍', name:'探求者型', sub:'変化を楽しみながら自律的に深く探求するタイプ',
+    desc:'変化を楽しみながら自律的に深く探求するタイプ。独自の専門性とフリーランス的な働き方が向いています。体育会の継続力・自己管理力が独立後の最大の資産になります。',
+    fits:['フリーランス専門家・独立コンサルタント','リサーチャー・プランナー','ライター・クリエイター系職種'],
+    avoids:['体力勝負・飛び込み営業','体育会文化が強い職場'],
+    strengths:['継続力と自己管理能力','独自の視点で深掘りする探求心'] }
+];
+
+/* ───────────── 質問データ（5問） ───────────── */
+const QUESTIONS = [
+  {
+    text: 'まず最初の質問です！\nあなたが仕事で<strong>一番モチベーションを感じる瞬間</strong>はどちらですか？',
+    choices: [
+      '📊 目標達成・数字で結果を出せた時',
+      '🌱 新しいことを学んだ・成長できた時'
+    ]
+  },
+  {
+    text: 'あなたの<strong>自然な仕事スタイル</strong>に近いのは？',
+    choices: [
+      '🤝 チームで連携・議論しながら動くのが好き',
+      '💭 自分で考えて、自分の判断で進めたい'
+    ]
+  },
+  {
+    text: '<strong>理想の仕事環境</strong>はどちらに近いですか？',
+    choices: [
+      '🏛 安定した基盤の中で、着実に力をつけたい',
+      '⚡ 変化が多く、スピード感のある環境が好き'
+    ]
+  },
+  {
+    text: '体育会での<strong>自分のポジション</strong>に近いのは？',
+    choices: [
+      '🔥 声を出す・引っ張る・まとめる存在だった',
+      '💪 任された仕事を確実・黙々とこなしていた'
+    ]
+  },
+  {
+    text: '最後に！\n転職の<strong>ご希望時期</strong>はいつ頃ですか？',
+    choices: [
+      '⚡ できるだけ早く（〜2ヶ月）',
+      '📅 3〜6ヶ月以内',
+      '🗓 半年〜1年以内',
+      '🔍 まずは情報収集したい'
+    ]
+  }
+];
+
+const TOTAL = QUESTIONS.length;
+const answers    = [];  // 回答テキスト
+const answerIdx  = [];  // 回答インデックス（0 or 1）
+let currentQ = 0;
+
+/* ───────────── ユーティリティ ───────────── */
+const area   = () => document.getElementById('chatArea');
+const pad    = () => area().querySelector('.chat-pad');
+const scroll = () => setTimeout(() => { const a = area(); a.scrollTop = a.scrollHeight; }, 60);
+
+function insertBefore(el) { area().insertBefore(el, pad()); }
+
+function updateProgress() {
+  document.getElementById('progressFill').style.width = (currentQ / TOTAL * 100) + '%';
+}
+
+/* ───────────── メッセージ追加 ───────────── */
+function addBotMessage(html, delayMs = 0) {
+  return new Promise(resolve => {
+    const typingRow = document.createElement('div');
+    typingRow.className = 'typing-row';
+    typingRow.innerHTML =
+      '<div class="avatar">🏆</div>' +
+      '<div class="typing-bubble">' +
+        '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>' +
+      '</div>';
+    insertBefore(typingRow);
+    scroll();
+
+    setTimeout(() => {
+      typingRow.remove();
+      const row = document.createElement('div');
+      row.className = 'msg-row bot';
+      row.innerHTML =
+        '<div class="avatar">🏆</div>' +
+        '<div class="bubble">' + html.replace(/\n/g, '<br>') + '</div>';
+      insertBefore(row);
+      scroll();
+      resolve();
+    }, delayMs + 650);
+  });
+}
+
+function addUserMessage(text) {
+  const row = document.createElement('div');
+  row.className = 'msg-row user';
+  row.innerHTML = '<div class="bubble">' + escHtml(text) + '</div>';
+  insertBefore(row);
+  scroll();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ───────────── 選択肢表示 ───────────── */
+function showChoices(qIndex, onSelect) {
+  const q = QUESTIONS[qIndex];
+
+  const step = document.createElement('div');
+  step.className = 'step-label';
+  step.textContent = (qIndex + 1) + ' / ' + TOTAL;
+  insertBefore(step);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'choices-wrap';
+  wrap.id = 'choices-' + qIndex;
+
+  q.choices.forEach((choice, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = escHtml(choice);
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+      step.remove();
+      wrap.remove();
+      onSelect(choice, idx);
+    });
+    wrap.appendChild(btn);
+  });
+
+  insertBefore(wrap);
+  scroll();
+}
+
+/* ───────────── 質問フロー ───────────── */
+async function nextQuestion() {
+  if (currentQ >= TOTAL) {
+    await showResult();
+    return;
+  }
+
+  updateProgress();
+  const q = QUESTIONS[currentQ];
+  const delay = currentQ === 0 ? 400 : 0;
+  await addBotMessage(q.text, delay);
+
+  showChoices(currentQ, async (selected, idx) => {
+    answers.push(selected);
+    answerIdx.push(idx);
+    addUserMessage(selected);
+    currentQ++;
+    await wait(320);
+    nextQuestion();
+  });
+}
+
+/* ───────────── タイプ計算 ───────────── */
+function computeTypeIndex() {
+  const q1 = answerIdx[0] === 1 ? 8 : 0;
+  const q2 = answerIdx[1] === 1 ? 4 : 0;
+  const q3 = answerIdx[2] === 1 ? 2 : 0;
+  const q4 = answerIdx[3] === 1 ? 1 : 0;
+  return q1 + q2 + q3 + q4;
+}
+
+/* ───────────── 結果表示 ───────────── */
+async function showResult() {
+  document.getElementById('progressFill').style.width = '100%';
+
+  await addBotMessage('回答ありがとうございます！🎉\n今、あなたのタイプを診断しています...', 200);
+  await wait(400);
+
+  // 分析中アニメーション
+  const analyzingCard = document.createElement('div');
+  analyzingCard.className = 'analyzing-card';
+  analyzingCard.innerHTML =
+    '<div class="analyzing-dots">' +
+      '<div class="analyzing-dot"></div>' +
+      '<div class="analyzing-dot"></div>' +
+      '<div class="analyzing-dot"></div>' +
+    '</div>' +
+    '<div class="analyzing-text">16タイプから診断中...</div>';
+  insertBefore(analyzingCard);
+  scroll();
+
+  await wait(2000);
+  analyzingCard.remove();
+
+  const typeIndex = computeTypeIndex();
+  const type = TYPES[typeIndex];
+
+  await addBotMessage(`診断完了！🎊\nあなたは <strong>${type.emoji} ${type.name}</strong> です！`, 200);
+  await wait(600);
+
+  // 結果カード
+  const card = document.createElement('div');
+  card.className = 'result-card';
+  card.innerHTML =
+    '<div class="result-type-badge-wrap">' +
+      '<span class="result-type-badge">16タイプ診断 結果</span>' +
+    '</div>' +
+    '<div class="result-icon">' + type.emoji + '</div>' +
+    '<div class="result-title">' + type.name + '</div>' +
+    '<div class="result-sub">' + type.sub + '</div>' +
+    '<div class="result-desc">' + type.desc + '</div>' +
+
+    '<div class="result-section">' +
+      '<div class="result-section-title fit">✅ 向いている仕事・環境</div>' +
+      type.fits.map(f => '<div class="result-item">' + escHtml(f) + '</div>').join('') +
+    '</div>' +
+
+    '<div class="result-section">' +
+      '<div class="result-section-title avoid">⚠️ 避けた方が良い仕事</div>' +
+      type.avoids.map(a => '<div class="result-item">' + escHtml(a) + '</div>').join('') +
+    '</div>' +
+
+    '<div class="result-section">' +
+      '<div class="result-section-title strength">💪 活かせる体育会の強み</div>' +
+      type.strengths.map(s => '<div class="result-item">' + escHtml(s) + '</div>').join('') +
+    '</div>';
+
+  insertBefore(card);
+  scroll();
+
+  await wait(900);
+
+  await addBotMessage(
+    '<strong>' + type.name + '</strong>に最適な求人情報と、\nより詳しい自己分析シートをLINEで無料プレゼント中です！', 300);
+  await wait(500);
+
+  // LINE誘導カード
+  const lineMsg = [
+    '転職タイプ診断から来ました！',
+    'タイプ：' + type.name,
+    '動機：'   + stripEmoji(answers[0]),
+    'スタイル：' + stripEmoji(answers[1]),
+    '環境：'   + stripEmoji(answers[2]),
+    '役割：'   + stripEmoji(answers[3]),
+    '時期：'   + stripEmoji(answers[4])
+  ].join('\n');
+
+  const LINE_ACCOUNT_ID = '@509dlmul';
+  const lineAddUrl = 'https://script.google.com/macros/s/AKfycbyx8SEEbu4W_NpdKcKq7V_O13qdk6I6ktTaQPbtYB9k4msTVeEMIi_T4ZqOHgE9ngFX/exec?source=chat_lp&type=' + encodeURIComponent(type.name);
+
+  const cta = document.createElement('div');
+  cta.className = 'result-card';
+  cta.innerHTML =
+    '<div class="gift-box">' +
+      '<div class="gift-box-title">🎁 LINE友達追加 限定プレゼント</div>' +
+      '<div class="gift-box-body">' +
+        '<strong>「' + escHtml(type.name) + '」向けの求人情報</strong>と、<br>' +
+        '<strong>「体育会出身者の本当の強みがわかる自己分析シート」</strong>を<br>' +
+        '無料でお届けします！追加後すぐに自動で届きます。' +
+      '</div>' +
+    '</div>' +
+    '<a href="' + lineAddUrl + '" class="line-btn" target="_blank" rel="noopener">' +
+      '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.064-.022.134-.031.2-.031.211 0 .391.09.51.252l2.443 3.316V8.108c0-.345.282-.63.63-.63.346 0 .627.285.627.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>' +
+      '</svg>' +
+      '<div class="line-btn-inner">' +
+        '<span class="line-btn-main">LINEを友達追加して結果を受け取る</span>' +
+        '<span class="line-btn-sub">診断結果＋自己分析シートを無料でお届け</span>' +
+      '</div>' +
+    '</a>' +
+    '<p class="privacy-note">※ 完全無料・強引な営業は一切ありません<br>個人情報は厳重に管理されます</p>';
+
+  insertBefore(cta);
+  scroll();
+}
+
+/* ───────────── ヘルパー ───────────── */
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function stripEmoji(str) {
+  return str.replace(/^[\u{1F300}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\s]+/u, '').trim();
+}
+
+/* ───────────── 開始 ───────────── */
+async function start() {
+  await wait(300);
+
+  await addBotMessage(
+    'こんにちは！🏆<br>' +
+    '体育会出身者専門の転職サポート<br><strong>「一職入魂」</strong>です！', 300);
+
+  await addBotMessage(
+    '今から<strong>5つの質問</strong>に答えると、<br>' +
+    'あなたの<strong>「体育会転職タイプ」が16パターンから判定</strong>されます。<br><br>' +
+    'タイプがわかると…<br>' +
+    '✅ <strong>自分に合う職種・環境</strong>がわかる<br>' +
+    '✅ <strong>向いていない仕事</strong>を避けられる<br>' +
+    '✅ 体育会の強みが活きる企業の傾向がわかる', 500);
+
+  await addBotMessage(
+    '所要時間は<strong>約1分</strong>です。<br>さっそく始めましょう！', 400);
+
+  await wait(350);
+  nextQuestion();
+}
+
+start();
+</script>
+</body>
+</html>
