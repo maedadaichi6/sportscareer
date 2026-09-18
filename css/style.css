@@ -443,7 +443,7 @@ textarea.form-ctrl { min-height: 140px; resize: vertical; }
 
 /* === Responsive === */
 @media (max-width: 720px) {
-  .container { padding: 0 14px; }
+  .container { padding: 0 20px; }
   .section { padding: 40px 0; }
   h1 { font-size: 1.35rem; }
   .rank-actions { flex-wrap: wrap; }
