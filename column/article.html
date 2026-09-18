@@ -68,6 +68,20 @@
       overflow-wrap: break-word;
       word-break: break-all;
     }
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      overflow-wrap: break-word;
+      word-break: break-all;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+    .breadcrumb-sep { margin: 0 2px; }
+    body { overflow-x: hidden; }
+    #article-content { max-width: 100%; overflow-x: hidden; }
     @media (max-width: 768px) {
       .layout-2col {
         display: block;
