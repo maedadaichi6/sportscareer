@@ -174,11 +174,15 @@
 
   const params = new URLSearchParams(location.search);
   const id = params.get('id');
+  const draftKey = params.get('draftKey');
 
   if (!id) {
     window.location.href = 'index.html';
   } else {
-    fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/columns/${id}`, {
+    const apiUrl = draftKey
+      ? `https://${SERVICE_DOMAIN}.microcms.io/api/v1/columns/${id}?draftKey=${draftKey}`
+      : `https://${SERVICE_DOMAIN}.microcms.io/api/v1/columns/${id}`;
+    fetch(apiUrl, {
       headers: { 'X-MICROCMS-API-KEY': API_KEY }
     })
     .then(res => {
