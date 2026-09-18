@@ -64,6 +64,32 @@
     .article-body a { color: var(--accent); }
     .article-body img { max-width: 100%; border-radius: 8px; margin: 16px 0; }
     .article-body strong { font-weight: 700; }
+    .article-body h2, .article-body h3, .article-title {
+      overflow-wrap: break-word;
+      word-break: break-all;
+    }
+    @media (max-width: 768px) {
+      .layout-2col {
+        display: block;
+      }
+      .layout-2col aside {
+        display: none;
+      }
+      .article-body h2 {
+        font-size: 1.15rem;
+        margin: 28px 0 12px;
+      }
+      .article-body h3 {
+        font-size: 1rem;
+      }
+      .article-body {
+        font-size: 0.95rem;
+        line-height: 1.85;
+      }
+      .article-title {
+        font-size: 1.3rem;
+      }
+    }
     .loading {
       text-align: center;
       padding: 80px 0;
