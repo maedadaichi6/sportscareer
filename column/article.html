@@ -11,10 +11,10 @@
 </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>コラム | 体育会キャリア</title>
+  <title>コラム | 体育会キャリアラボ</title>
   <meta name="description" content="">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="体育会キャリア">
+  <meta property="og:site_name" content="体育会キャリアラボ">
   <meta property="og:title" content="">
   <meta property="og:description" content="">
   <meta property="og:image" content="https://sportscareer.owencorporation.co.jp/images/ogp.png">
@@ -199,7 +199,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 体育会キャリア</span>
+      <span>&copy; 2026 体育会キャリアラボ</span>
       <span>本サイトはアフィリエイト広告（PR）を利用しています</span>
     </div>
   </div>
@@ -233,11 +233,11 @@
     })
     .then(article => {
       const pageUrl = `https://sportscareer.owencorporation.co.jp/column/article.html?id=${id}`;
-      document.title = `${article.title} | 体育会キャリア`;
+      document.title = `${article.title} | 体育会キャリアラボ`;
 
       // メタタグ・OGP動的設定
       document.querySelector('meta[name="description"]').setAttribute('content', article.description || article.title);
-      document.querySelector('meta[property="og:title"]').setAttribute('content', article.title + ' | 体育会キャリア');
+      document.querySelector('meta[property="og:title"]').setAttribute('content', article.title + ' | 体育会キャリアラボ');
       document.querySelector('meta[property="og:description"]').setAttribute('content', article.description || '');
       if (article.thumbnail) document.querySelector('meta[property="og:image"]').setAttribute('content', article.thumbnail.url);
       document.querySelector('link[rel="canonical"]').setAttribute('href', pageUrl);
@@ -253,8 +253,8 @@
             "description": article.description || '',
             "datePublished": pubDate,
             "dateModified": article.updatedAt || pubDate,
-            "author": { "@type": "Organization", "name": "体育会キャリア編集部", "url": "https://sportscareer.owencorporation.co.jp/" },
-            "publisher": { "@type": "Organization", "name": "体育会キャリア", "logo": { "@type": "ImageObject", "url": "https://sportscareer.owencorporation.co.jp/images/ogp.png" } },
+            "author": { "@type": "Organization", "name": "体育会キャリアラボ編集部", "url": "https://sportscareer.owencorporation.co.jp/" },
+            "publisher": { "@type": "Organization", "name": "体育会キャリアラボ", "logo": { "@type": "ImageObject", "url": "https://sportscareer.owencorporation.co.jp/images/ogp.png" } },
             "image": article.thumbnail ? article.thumbnail.url : "https://sportscareer.owencorporation.co.jp/images/ogp.png",
             "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl }
           },
@@ -290,7 +290,7 @@
         <h1 class="article-title" style="font-size:1.25rem;word-break:break-all;overflow-wrap:break-word;max-width:100%;line-height:1.6;letter-spacing:0.01em;">${article.title}</h1>
         <div class="article-meta-row">
           <span>📅 ${formatDate(article.publishedAt || article.createdAt)}</span>
-          <span>👤 体育会キャリア編集部</span>
+          <span>👤 体育会キャリアラボ編集部</span>
         </div>
         <div class="article-body" style="font-size:0.95rem;line-height:1.85;letter-spacing:0.02em;">${article.body}</div>
       `;
