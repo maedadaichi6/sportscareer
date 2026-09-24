@@ -240,7 +240,7 @@
 
       document.getElementById('article-content').innerHTML = `
         <a href="index.html" class="back-link">← コラム一覧に戻る</a>
-        <nav class="breadcrumb" style="margin-bottom:16px;">
+        <nav class="breadcrumb" style="margin-bottom:16px;display:flex;flex-wrap:wrap;font-size:0.78rem;color:#868e96;word-break:break-all;overflow-wrap:break-word;max-width:100%;">
           <a href="../index.html">ホーム</a>
           <span class="breadcrumb-sep">›</span>
           <a href="index.html">コラム</a>
@@ -248,7 +248,7 @@
           <span>${article.title}</span>
         </nav>
         ${thumb}
-        <h1 class="article-title">${article.title}</h1>
+        <h1 class="article-title" style="font-size:clamp(1rem,4vw,1.8rem);word-break:break-all;overflow-wrap:break-word;max-width:100%;line-height:1.5;">${article.title}</h1>
         <div class="article-meta-row">
           <span>📅 ${formatDate(article.publishedAt || article.createdAt)}</span>
           <span>👤 体育会キャリア編集部</span>
