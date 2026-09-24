@@ -12,7 +12,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>コラム | 体育会キャリア</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/style.css?v=20260924">
   <style>
     .article-thumb {
       width: 100%;
@@ -80,8 +80,9 @@
     }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; }
     .breadcrumb-sep { margin: 0 2px; }
-    body { overflow-x: hidden; }
-    #article-content { max-width: 100%; overflow-x: hidden; }
+    html, body { overflow-x: hidden !important; max-width: 100% !important; }
+    #article-content { max-width: 100% !important; overflow-x: hidden; }
+    .article-title { max-width: 100% !important; }
     @media (max-width: 768px) {
       .layout-2col {
         display: block;
