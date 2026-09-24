@@ -91,19 +91,11 @@
         display: none;
       }
       .article-body h2 {
-        font-size: 1.05rem !important;
+        font-size: 1.05rem;
         margin: 24px 0 10px;
       }
       .article-body h3 {
-        font-size: 0.95rem !important;
-      }
-      .article-body {
-        font-size: 0.92rem !important;
-        line-height: 1.9;
-      }
-      .article-title {
-        font-size: 1.15rem !important;
-        line-height: 1.5;
+        font-size: 0.95rem;
       }
     }
     .loading {
@@ -248,12 +240,12 @@
           <span>${article.title}</span>
         </nav>
         ${thumb}
-        <h1 class="article-title" style="font-size:clamp(1rem,4vw,1.8rem);word-break:break-all;overflow-wrap:break-word;max-width:100%;line-height:1.5;color:red;">${article.title}</h1>
+        <h1 class="article-title" style="font-size:1.25rem;word-break:break-all;overflow-wrap:break-word;max-width:100%;line-height:1.6;letter-spacing:0.01em;">${article.title}</h1>
         <div class="article-meta-row">
           <span>📅 ${formatDate(article.publishedAt || article.createdAt)}</span>
           <span>👤 体育会キャリア編集部</span>
         </div>
-        <div class="article-body">${article.body}</div>
+        <div class="article-body" style="font-size:0.95rem;line-height:2.0;letter-spacing:0.02em;">${article.body}</div>
       `;
     })
     .catch(() => {
