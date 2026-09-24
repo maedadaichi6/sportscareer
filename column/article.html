@@ -12,6 +12,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>コラム | 体育会キャリア</title>
+  <meta name="description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="体育会キャリア">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:image" content="https://sportscareer.owencorporation.co.jp/images/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="">
   <link rel="stylesheet" href="../css/style.css?v=20260924c">
   <style>
     .article-thumb {
@@ -224,7 +232,46 @@
       return res.json();
     })
     .then(article => {
+      const pageUrl = `https://sportscareer.owencorporation.co.jp/column/article.html?id=${id}`;
       document.title = `${article.title} | 体育会キャリア`;
+
+      // メタタグ・OGP動的設定
+      document.querySelector('meta[name="description"]').setAttribute('content', article.description || article.title);
+      document.querySelector('meta[property="og:title"]').setAttribute('content', article.title + ' | 体育会キャリア');
+      document.querySelector('meta[property="og:description"]').setAttribute('content', article.description || '');
+      if (article.thumbnail) document.querySelector('meta[property="og:image"]').setAttribute('content', article.thumbnail.url);
+      document.querySelector('link[rel="canonical"]').setAttribute('href', pageUrl);
+
+      // 構造化データ（Article + BreadcrumbList）
+      const pubDate = article.publishedAt || article.createdAt;
+      const jsonLd = {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": article.title,
+            "description": article.description || '',
+            "datePublished": pubDate,
+            "dateModified": article.updatedAt || pubDate,
+            "author": { "@type": "Organization", "name": "体育会キャリア編集部", "url": "https://sportscareer.owencorporation.co.jp/" },
+            "publisher": { "@type": "Organization", "name": "体育会キャリア", "logo": { "@type": "ImageObject", "url": "https://sportscareer.owencorporation.co.jp/images/ogp.png" } },
+            "image": article.thumbnail ? article.thumbnail.url : "https://sportscareer.owencorporation.co.jp/images/ogp.png",
+            "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://sportscareer.owencorporation.co.jp/" },
+              { "@type": "ListItem", "position": 2, "name": "コラム", "item": "https://sportscareer.owencorporation.co.jp/column/index.html" },
+              { "@type": "ListItem", "position": 3, "name": article.title }
+            ]
+          }
+        ]
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(jsonLd);
+      document.head.appendChild(script);
 
       const thumb = article.thumbnail
         ? `<img class="article-thumb" src="${article.thumbnail.url}" alt="${article.title}">`
