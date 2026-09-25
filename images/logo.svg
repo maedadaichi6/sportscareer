@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 44" width="220" height="44">
+  <!-- Badge circle -->
+  <circle cx="22" cy="22" r="21" fill="#1a2e5a"/>
+
+  <!-- Running track oval (bottom, orange) -->
+  <ellipse cx="22" cy="32" rx="13" ry="4.5" fill="none" stroke="#e8510e" stroke-width="1.5"/>
+
+  <!-- Runner silhouette (flat, white + orange head) -->
+  <!-- Head -->
+  <circle cx="26" cy="9" r="3" fill="#e8510e"/>
+  <!-- Body (leaning forward) -->
+  <line x1="25" y1="12" x2="22" y2="21" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Right arm forward -->
+  <line x1="24" y1="15" x2="30" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <!-- Left arm back -->
+  <line x1="24" y1="15" x2="18" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <!-- Right leg forward -->
+  <line x1="22" y1="21" x2="27" y2="29" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Left leg back + bent knee -->
+  <path d="M22 21 L16 17 L13 22" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Rising arrow (career growth, orange) -->
+  <path d="M9 26 L9 16 L7 19 M9 16 L11 19" stroke="#e8510e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Text: 体育会 (small label) -->
+  <text x="50" y="17"
+    font-family="'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif"
+    font-size="10" font-weight="700" fill="#64748b" letter-spacing="2">体育会</text>
+
+  <!-- Text: キャリア (main, navy) -->
+  <text x="50" y="37"
+    font-family="'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif"
+    font-size="18" font-weight="900" fill="#1a2e5a">キャリア</text>
+
+  <!-- Text: ラボ (accent, orange) -->
+  <text x="158" y="37"
+    font-family="'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif"
+    font-size="18" font-weight="900" fill="#e8510e">ラボ</text>
+</svg>
