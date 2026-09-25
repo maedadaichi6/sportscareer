@@ -240,7 +240,8 @@
       document.querySelector('meta[name="description"]').setAttribute('content', article.description || article.title);
       document.querySelector('meta[property="og:title"]').setAttribute('content', article.title + ' | 体育会キャリアラボ');
       document.querySelector('meta[property="og:description"]').setAttribute('content', article.description || '');
-      if (article.thumbnail) document.querySelector('meta[property="og:image"]').setAttribute('content', article.thumbnail.url);
+      const ogImage = article.image_url || (article.thumbnail && article.thumbnail.url);
+      if (ogImage) document.querySelector('meta[property="og:image"]').setAttribute('content', ogImage);
       document.querySelector('link[rel="canonical"]').setAttribute('href', pageUrl);
 
       // 構造化データ（Article + BreadcrumbList）
@@ -256,7 +257,7 @@
             "dateModified": article.updatedAt || pubDate,
             "author": { "@type": "Organization", "name": "体育会キャリアラボ編集部", "url": "https://sportscareer.owencorporation.co.jp/" },
             "publisher": { "@type": "Organization", "name": "体育会キャリアラボ", "logo": { "@type": "ImageObject", "url": "https://sportscareer.owencorporation.co.jp/images/ogp.png" } },
-            "image": article.thumbnail ? article.thumbnail.url : "https://sportscareer.owencorporation.co.jp/images/ogp.png",
+            "image": article.image_url || (article.thumbnail && article.thumbnail.url) || "https://sportscareer.owencorporation.co.jp/images/ogp.png",
             "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl }
           },
           {
@@ -274,8 +275,9 @@
       script.text = JSON.stringify(jsonLd);
       document.head.appendChild(script);
 
-      const thumb = article.thumbnail
-        ? `<img class="article-thumb" src="${article.thumbnail.url}" alt="${article.title}">`
+      const thumbSrc = article.image_url || (article.thumbnail && article.thumbnail.url);
+      const thumb = thumbSrc
+        ? `<img class="article-thumb" src="${thumbSrc}" alt="${article.title}">`
         : '';
 
       document.getElementById('article-content').innerHTML = `
