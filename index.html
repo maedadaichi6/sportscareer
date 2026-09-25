@@ -1414,7 +1414,7 @@
     }
     el.innerHTML = data.contents.map(a => `
       <a href="column/article.html?id=${a.id}" class="col-preview-card">
-        ${a.thumbnail ? `<img class="col-preview-thumb" src="${a.thumbnail.url}" alt="${a.title}" loading="lazy">` : `<div class="col-preview-thumb-placeholder">📝</div>`}
+        ${(a.image_url || (a.thumbnail && a.thumbnail.url)) ? `<img class="col-preview-thumb" src="${a.image_url || a.thumbnail.url}" alt="${a.title}" loading="lazy">` : `<div class="col-preview-thumb-placeholder">📝</div>`}
         <div class="col-preview-body">
           <div class="col-preview-date">${formatDate(a.publishedAt || a.createdAt)}</div>
           <div class="col-preview-title">${a.title}</div>
