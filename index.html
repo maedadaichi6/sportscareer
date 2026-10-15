@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -1429,5 +1429,28 @@ function toggleNav() {
   document.getElementById('siteNav').classList.toggle('open');
 }
 </script>
-</body>
+
+<script>
+/* DEBUG_OVERFLOW - remove after fix */
+window.addEventListener('load', function() {
+  var vw = document.documentElement.clientWidth;
+  if (document.body.scrollWidth <= vw + 2) return;
+  var seen = {};
+  var results = [];
+  document.querySelectorAll('*').forEach(function(el) {
+    var r = el.getBoundingClientRect();
+    if (r.right > vw + 4) {
+      var cls = typeof el.className === 'string' ? el.className.trim().split(' ')[0] : '';
+      var key = el.tagName + (el.id ? '#'+el.id : (cls ? '.'+cls : ''));
+      if (!seen[key]) { seen[key] = 1; results.push(key + ':' + Math.round(r.right-vw) + 'px'); }
+      el.style.outline = '3px solid red';
+    }
+  });
+  if (!results.length) return;
+  var d = document.createElement('div');
+  d.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#c00;color:#fff;padding:10px 14px;font:12px/1.6 monospace;z-index:99999;max-height:50vh;overflow-y:auto;word-break:break-all;';
+  d.innerHTML = '<b>Overflow(' + results.length + '):</b><br>' + results.slice(0,20).join('<br>');
+  document.body.appendChild(d);
+});
+</script></body>
 </html>
