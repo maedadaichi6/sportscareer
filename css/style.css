@@ -44,6 +44,7 @@ p:last-child { margin-bottom: 0; }
 /* === Layout === */
 .container { width: 100%; max-width: var(--max-w); margin: 0 auto; padding: 0 20px; }
 .layout-2col { display: grid; grid-template-columns: 1fr 280px; gap: 40px; align-items: start; }
+.layout-2col > * { min-width: 0; }
 @media (max-width: 900px) { .layout-2col { grid-template-columns: 1fr; } }
 .section { padding: 56px 0; }
 
