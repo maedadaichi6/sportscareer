@@ -1,17 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "destination": "https://taiikukai.career-kyokasho.com/$1",
-      "permanent": true,
-      "has": [
-        {
-          "type": "host",
-          "value": "sportscareer.owencorporation.co.jp"
-        }
-      ]
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
