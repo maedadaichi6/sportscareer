@@ -18,7 +18,7 @@
   <meta property="og:site_name" content="体育会キャリアラボ">
   <meta property="og:title" content="">
   <meta property="og:description" content="">
-  <meta property="og:image" content="https://sportscareer.owencorporation.co.jp/images/ogp.png">
+  <meta property="og:image" content="https://taiikukai.career-kyokasho.com/images/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="">
   <link rel="stylesheet" href="../css/style.css?v=20260924c">
@@ -238,7 +238,7 @@
       return res.json();
     })
     .then(article => {
-      const pageUrl = `https://sportscareer.owencorporation.co.jp/column/article.html?id=${id}`;
+      const pageUrl = `https://taiikukai.career-kyokasho.com/column/article.html?id=${id}`;
       document.title = `${article.title} | 体育会キャリアラボ`;
 
       // メタタグ・OGP動的設定
@@ -260,16 +260,16 @@
             "description": article.description || '',
             "datePublished": pubDate,
             "dateModified": article.updatedAt || pubDate,
-            "author": { "@type": "Organization", "name": "体育会キャリアラボ編集部", "url": "https://sportscareer.owencorporation.co.jp/" },
-            "publisher": { "@type": "Organization", "name": "体育会キャリアラボ", "logo": { "@type": "ImageObject", "url": "https://sportscareer.owencorporation.co.jp/images/ogp.png" } },
-            "image": article.image_url || (article.thumbnail && article.thumbnail.url) || "https://sportscareer.owencorporation.co.jp/images/ogp.png",
+            "author": { "@type": "Organization", "name": "体育会キャリアラボ編集部", "url": "https://taiikukai.career-kyokasho.com/" },
+            "publisher": { "@type": "Organization", "name": "体育会キャリアラボ", "logo": { "@type": "ImageObject", "url": "https://taiikukai.career-kyokasho.com/images/ogp.png" } },
+            "image": article.image_url || (article.thumbnail && article.thumbnail.url) || "https://taiikukai.career-kyokasho.com/images/ogp.png",
             "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl }
           },
           {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://sportscareer.owencorporation.co.jp/" },
-              { "@type": "ListItem", "position": 2, "name": "コラム", "item": "https://sportscareer.owencorporation.co.jp/column/index.html" },
+              { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://taiikukai.career-kyokasho.com/" },
+              { "@type": "ListItem", "position": 2, "name": "コラム", "item": "https://taiikukai.career-kyokasho.com/column/index.html" },
               { "@type": "ListItem", "position": 3, "name": article.title }
             ]
           }

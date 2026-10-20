@@ -1,0 +1,33 @@
+# 体育会キャリアラボ
+
+> 体育会出身・アスリート経験者の転職・就職活動を支援するエージェント比較メディアです。
+
+## サイト概要
+
+体育会キャリアラボは、体育会出身者・スポーツ経験者の第二新卒・既卒転職に特化した転職エージェント比較サイトです。Owen Corporation（オーウェン株式会社）が運営しています。
+
+## 主なコンテンツ
+
+- [体育会向け転職エージェントおすすめ比較](https://taiikukai.career-kyokasho.com/): 体育会出身者向けの転職エージェントをランキング形式で比較
+- [詳細比較表](https://taiikukai.career-kyokasho.com/hikaku.html): 各エージェントの特徴・料金・対応エリアを一覧比較
+- [マエノメリ詳細](https://taiikukai.career-kyokasho.com/agent/maenomery.html): 体育会特化型エージェント
+- [アーシャルデザイン詳細](https://taiikukai.career-kyokasho.com/agent/archual-design.html): アスリート特化型エージェント
+- [スポチャレ詳細](https://taiikukai.career-kyokasho.com/agent/spochare.html): スポーツ経験者向けエージェント
+- [コラム一覧](https://taiikukai.career-kyokasho.com/column/): 体育会の転職・就活に役立つ記事
+
+## 比較対象エージェント
+
+1. マエノメリ - 体育会・スポーツ経験者特化
+2. アーシャルデザイン - アスリートキャリア専門
+3. スポチャレ - スポーツ人材特化
+4. PLMキャリア - 体育会出身者向け
+5. doda - 総合型（体育会サポートあり）
+6. リクルートエージェント - 総合型（求人数最大）
+
+## 運営情報
+
+- 運営: Owen Corporation（オーウェン株式会社）
+- URL: https://taiikukai.career-kyokasho.com/
+- 問い合わせ: https://taiikukai.career-kyokasho.com/contact.html
+- プライバシーポリシー: https://taiikukai.career-kyokasho.com/privacy-policy.html
+- 免責事項: https://taiikukai.career-kyokasho.com/disclaimer.html
