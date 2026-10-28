@@ -245,7 +245,7 @@
       document.querySelector('meta[name="description"]').setAttribute('content', article.description || article.title);
       document.querySelector('meta[property="og:title"]').setAttribute('content', article.title + ' | 体育会キャリアラボ');
       document.querySelector('meta[property="og:description"]').setAttribute('content', article.description || '');
-      const ogImage = article.image_url || (article.thumbnail && article.thumbnail.url);
+      const ogImage = (article.thumbnail && article.thumbnail.url) || article.image_url;
       if (ogImage) document.querySelector('meta[property="og:image"]').setAttribute('content', ogImage);
       document.querySelector('link[rel="canonical"]').setAttribute('href', pageUrl);
 
@@ -262,7 +262,7 @@
             "dateModified": article.updatedAt || pubDate,
             "author": { "@type": "Organization", "name": "体育会キャリアラボ編集部", "url": "https://taiikukai.career-kyokasho.com/" },
             "publisher": { "@type": "Organization", "name": "体育会キャリアラボ", "logo": { "@type": "ImageObject", "url": "https://taiikukai.career-kyokasho.com/images/ogp.png" } },
-            "image": article.image_url || (article.thumbnail && article.thumbnail.url) || "https://taiikukai.career-kyokasho.com/images/ogp.png",
+            "image": (article.thumbnail && article.thumbnail.url) || article.image_url || "https://taiikukai.career-kyokasho.com/images/ogp.png",
             "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl }
           },
           {
@@ -280,7 +280,7 @@
       script.text = JSON.stringify(jsonLd);
       document.head.appendChild(script);
 
-      const thumbSrc = article.image_url || (article.thumbnail && article.thumbnail.url);
+      const thumbSrc = (article.thumbnail && article.thumbnail.url) || article.image_url;
       const thumb = thumbSrc
         ? `<img class="article-thumb" src="${thumbSrc}" alt="${article.title}">`
         : '';

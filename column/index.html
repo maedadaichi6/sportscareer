@@ -192,7 +192,7 @@
       const card = document.createElement('a');
       card.className = 'column-card';
       card.href = `article.html?id=${article.id}`;
-      const thumbSrc = article.image_url || (article.thumbnail && article.thumbnail.url);
+      const thumbSrc = (article.thumbnail && article.thumbnail.url) || article.image_url;
       const thumb = thumbSrc
         ? `<img class="column-card-thumb" src="${thumbSrc}" alt="${article.title}" loading="lazy">`
         : `<div class="column-card-thumb-placeholder">📝</div>`;
